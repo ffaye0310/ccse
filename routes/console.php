@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Models\Category;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -17,3 +18,14 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+
+Artisan::command('category:create {name}', function ($name) {
+    $cat = new CategoryController();
+    $cat->createCategory($name);
+})->purpose('Create new category entry');
+ 
+Artisan::command('category:delete {name}', function ($name) { 
+    $cat = new CategoryController();
+    $cat->deleteCategory($name);
+})->purpose('Delete  a category');
