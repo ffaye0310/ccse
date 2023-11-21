@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::create('product', function (Blueprint $table) {
 
-            $table->id()->unique()->autoIncrement();
+            $table->integer('id')->unique()->autoIncrement();
             $table->string('name');
             $table->float('price');
             $table->binary('img')->nullable();
@@ -23,8 +23,6 @@ return new class extends Migration
             $table->foreign('cat_id')->references('id')->on('category'); 
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent();
-
-
            
         });
     }

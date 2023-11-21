@@ -13,13 +13,14 @@ return new class extends Migration
     {
         //
         Schema::create('category', function (Blueprint $table) {
-        $table->integer('cid')->unique()->autoIncrement();
-            $table->string('cname');
-            $table->integer('parent_cat')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-        });
+            $table->integer('cid')->unique()->autoIncrement();
+                $table->string('cname');
+                $table->integer('parent_cat')->nullable();
+                $table->timestamp('created_at')->useCurrent();
+                $table->timestamp('updated_at')->useCurrent();
+            });
     }
+
     /**
      * Reverse the migrations.
      */

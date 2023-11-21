@@ -12,10 +12,15 @@ class CategoryController extends Controller
     // public function __construct() {
     //     $this->category = new Category();
     // }
+    public function index()
+    {
+        //
+        return response(["data" => Category::all()]);
+    }
     public function createCategory($name)  {
 
         $this->category = new Category([
-            "name" => $name,
+            "cname" => $name,
             "parent_cat" => 1
         ]);
 
@@ -29,7 +34,7 @@ class CategoryController extends Controller
     public function deleteCategory($name){
 
         $cats =  Category::all();
-        $cat = $cats->where("name","=",$name);
+        $cat = $cats->where("cname","=",$name);
         if($cat[0]->delete()){
             echo "Category successfully deleted";
         }else{

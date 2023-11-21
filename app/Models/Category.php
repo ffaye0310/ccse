@@ -11,5 +11,5 @@ class Category extends Model
 
     protected $table = 'category';
 
-    protected $fillable = ['name','parent_cat'];
+    protected $fillable = ['cname','parent_cat'];
 }

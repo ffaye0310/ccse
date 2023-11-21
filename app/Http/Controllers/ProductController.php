@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
@@ -16,6 +18,9 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $products =DB::table('product')
+        ->join('category', 'product.cat_id', '=', 'category.cid')->get();
+        return response(["data"=>$products]);
     }
 
     /**
@@ -48,12 +53,21 @@ class ProductController extends Controller
     {
         //
         $this->product = new Product([
-            'name' => 'product test',
-            'price' => 5000,
-            'img' =>  file(url()->to('assets/img/img.png')),
-            'desc' => "Desc"
+            'name' => $request->name,
+            'price' => floatval($request->price),
+            'img' =>  $request->file('img'),
+            'description' => $request->desc,
+            "cat_id" => intval($request->cat)
         ]);
-        $this->product->save();
+
+        if ($this->product->save()){
+            $message = "success";
+        } else {
+            $message = "error" ;
+        }
+        
+        return response(["message" => $message]);
+
     }
 
     /**
@@ -62,7 +76,11 @@ class ProductController extends Controller
     public function show(string $id)
     {
         //
-        // return response(["data"=>Product::all()]);
+        $product =DB::table('product')
+        ->join('category', 'product.cat_id', '=', 'category.cid')
+        ->where('product.id','=',$id)->get();
+        return response(["data"=>$product[0]]); 
+       
     }
 
     /**
@@ -79,6 +97,24 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        // dd($request->input('name'));
+        $this->product = Product::find($id);
+        $this->product->name = $request->name ;
+        $this->product->price = floatval($request->price);
+        $this->product->img = $request->file('img');
+        $this->product->cat_id = intval($request->cat);
+        $this->product->description = $request->desc;
+
+
+        // $this->product->update();
+        if ($this->product->update()){
+            $message = "success";
+        } else {
+            $message = "error" ;
+        }
+        
+        return response(["message" => $message]);
+
     }
 
     /**
@@ -94,6 +130,18 @@ class ProductController extends Controller
         }else{
             echo "Error...";
         };
+
+    }
+    public function destroy(string $id)
+    {
+        //
+        $this->product =  Product::find($id);
+        if($this->product->delete()){
+            $message = "success";
+        }else{
+            $message = "error" ;
+        };
+        return response(["message" => $message]);
 
     }
 }
